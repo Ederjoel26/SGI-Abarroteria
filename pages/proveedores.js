@@ -1,4 +1,5 @@
 import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 import { useEffect, useRef, useState } from "react";
 import Cookies from "universal-cookie";
 import { useRouter } from "next/router";
@@ -46,13 +47,13 @@ const Proveedores = () => {
                     break;
                 case "update":
                     await fetch(`http://localhost/APISGI/api/proveedores.php?id=${id.current.value}`, {
-                         method: "PUT",
+                         method: "POST",
                     body: JSON.stringify(proveedorEnviar),
                     });
                     alert("Proveedor actualizado");
                 case "delete":
-                    await fetch(`http://localhost/APISGI/api/proveedores.php?id=${id.current.value}`, {
-                    method: "DELETE",
+                    await fetch(`http://localhost/APISGI/api/proveedores.php?idDelete=${id.current.value}`, {
+                    method: "POST",
                     });
                     alert("Proveedor eliminado");
                     break;
@@ -60,6 +61,17 @@ const Proveedores = () => {
         }catch(ex){
         }
         fetchData();
+        handleEmptyData();
+    }
+
+    const handleEmptyData = async () => {
+        id.current.value = "";
+        nombre.current.value = "";
+        proveedor.current.value = "";
+        producto.current.value = "";
+        precioUnitario.current.value = "";
+        costoUnitario.current.value = "";
+        numeroTelefonico.current.value = "";
     }
 
     const handleFillData = async (aux) => {
@@ -87,72 +99,81 @@ const Proveedores = () => {
     return(
         <>
             <Navbar/>
-            <div className="container mx-auto text-center">
-            <h1 className="text-3xl font-bold mb-6">Bienvenidos al apartado de Proveedores</h1>
-            <form onSubmit={handleSubmit} className="max-w-md mx-auto">
-                <h3 className="text-xl font-bold mb-4">Agregar proveedor</h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="mb-4">
-                        <input type="text" className="border rounded-lg py-2 px-3 w-full" disabled placeholder="ID" ref={id}></input>
-                    </div>
-                    <div className="mb-4">
-                        <input type="text" className="border rounded-lg py-2 px-3 w-full" placeholder="Proveedor" required={true} ref={proveedor} />
-                    </div>
-                    <div className="mb-4">
-                        <input type="text" className="border rounded-lg py-2 px-3 w-full" placeholder="Nombre" required={true} ref={nombre} />
-                    </div>
-                    <div className="mb-4">
-                        <input type="text" className="border rounded-lg py-2 px-3 w-full" placeholder="Producto" required={true} ref={producto} />
-                    </div>
-                    <div className="mb-4">
-                        <input type="number" className="border rounded-lg py-2 px-3 w-full" placeholder="Precio unitario" required={true} ref={precioUnitario} />
-                    </div>
-                    <div className="mb-4">
-                        <input type="number" className="border rounded-lg py-2 px-3 w-full" placeholder="Costo unitario" required={true} ref={costoUnitario} />
-                    </div>
-                    <div className="mb-4">
-                        <input type="number" className="border rounded-lg py-2 px-3 w-full" placeholder="Numero telefonico" required={true} ref={numeroTelefonico} />
-                    </div>
-                    <div className="mb-4">
-                        <select name="option" className="border rounded-lg py-2 px-3 w-full" ref={option}>
-                            <option value="insert">Insertar</option>
-                            <option value="update">Actualizar</option>
-                            <option value="delete">Eliminar</option>
-                        </select>
-                    </div>
+            <div className="container mx-auto">
+            <h1 className="text-center mt-5 mb-4 text-3xl font-bold">Proveedores</h1>
+            <div className="flex justify-center text-center">
+                <div className="w-full sm:w-1/2">
+                    <form onSubmit={handleSubmit} className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+                        <div className="mb-4">
+                            <input type="text" className="appearance-none border border-gray-400 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" disabled placeholder="ID" ref={id}></input>
+                        </div>
+                        <div className="mb-4">
+                            <input type="text" className="appearance-none border border-gray-400 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Proveedor" required={true} ref={proveedor} />
+                        </div>
+                        <div className="mb-4">
+                            <input type="text" className="appearance-none border border-gray-400 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Nombre" required={true} ref={nombre} />
+                        </div>
+                        <div className="mb-4">
+                            <input type="text" className="appearance-none border border-gray-400 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Producto" required={true} ref={producto} />
+                        </div>
+                        <div className="mb-4">
+                            <input type="number" className="appearance-none border border-gray-400 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Precio unitario" required={true} ref={precioUnitario} />
+                        </div>
+                        <div className="mb-4">
+                            <input type="number" className="appearance-none border border-gray-400 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Costo unitario" required={true} ref={costoUnitario} />
+                        </div>
+                        <div className="mb-4">
+                            <input type="number" className="appearance-none border border-gray-400 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Numero telefonico" required={true} ref={numeroTelefonico} />
+                        </div>
+                        <div className="mb-4">
+                            <select name="option" className="appearance-none border border-gray-400 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" ref={option}>
+                                <option value="insert">Insertar</option>
+                                <option value="update">Actualizar</option>
+                                <option value="delete">Eliminar</option>
+                            </select>
+                        </div>
+                        <button type="submit" className="bg-gray-800 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Realizar acción</button>
+                    </form>
                 </div>
-                <button type="submit" className="bg-gray-800 text-white py-2 px-4 rounded-lg mt-3 hover:bg-gray-700">Realizar acción</button>
-            </form>
-            <table className="table-auto mt-5 mx-auto">
-                <thead>
-                    <tr>
-                        <th className="px-4 py-2">ID</th>
-                        <th className="px-4 py-2">Proveedor</th>
-                        <th className="px-4 py-2">Nombre</th>
-                        <th className="px-4 py-2">Producto</th>
-                        <th className="px-4 py-2">Precio unitario</th>
-                        <th className="px-4 py-2">Costo unitario</th>
-                        <th className="px-4 py-2">Numero telefonico</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {proveedores.map(proveedor => (
-                        <tr key={proveedor.id}>
-                            <td className="border px-4 py-2">{proveedor.id}</td>
-                            <td className="border px-4 py-2">{proveedor.proveedor}</td>
-                            <td className="border px-4 py-2">{proveedor.nombre}</td>
-                            <td className="border px-4 py-2">{proveedor.producto}</td>
-                            <td className="border px-4 py-2">{proveedor.precio_unitario}</td>
-                            <td className="border px-4 py-2">{proveedor.costo_unitario}</td>
-                            <td className="border px-4 py-2">{proveedor.numero_telefonico}</td>
-                            <td className="border px-4 py-2"> 
-                                <button onClick={() => handleFillData(proveedor)}>Seleccionar</button>
-                            </td>
+            </div>
+            <div className="overflow-x-auto">
+                <table className="table-auto w-full">
+                    <thead>
+                        <tr>
+                            <th className="px-4 py-2">ID</th>
+                            <th className="px-4 py-2">Proveedor</th>
+                            <th className="px-4 py-2">Nombre</th>
+                            <th className="px-4 py-2">Producto</th>
+                            <th className="px-4 py-2">Precio unitario</th>
+                            <th className="px-4 py-2">Costo unitario</th>
+                            <th className="px-4 py-2">Numero telefonico</th>
+                            <th className="px-4 py-2">
+                                <button className="bg-gray-800 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" onClick={() => handleEmptyData()}>Deseleccionar</button>
+                            </th>
                         </tr>
-                    ))}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        {
+                        proveedores.map(proveedor => (
+                            <tr key={proveedor.id}>
+                                <td className="border px-4 py-2">{proveedor.id}</td>
+                                <td className="border px-4 py-2">{proveedor.proveedor}</td>
+                                <td className="border px-4 py-2">{proveedor.nombre}</td>
+                                <td className="border px-4 py-2">{proveedor.producto}</td>
+                                <td className="border px-4 py-2">{proveedor.precio_unitario}</td>
+                                <td className="border px-4 py-2">{proveedor.costo_unitario}</td>
+                                <td className="border px-4 py-2">{proveedor.numero_telefonico}</td>
+                                <td className="border px-4 py-2"> 
+                                    <button className="bg-gray-800 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" onClick={() => handleFillData(proveedor)}>Seleccionar</button>
+                                </td>
+                            </tr>
+                        ))
+                        }
+                    </tbody>
+                </table>
+            </div>
         </div>
+        <Footer/>
         </>
     );
 }
