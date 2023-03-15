@@ -1,6 +1,8 @@
 import { useRouter } from "next/router";
 import { useEffect, useRef } from "react";
 import Cookies from "universal-cookie";
+import Footer from '@/components/Footer'
+import NavbarInicio from "@/components/NavbarInicio";
 
 const Registrarse = () => {
 
@@ -47,8 +49,10 @@ const Registrarse = () => {
     }, []);
 
     return(
+        <>
+        <NavbarInicio/>
         <div className="flex flex-col justify-center items-center h-screen">
-            <form className="bg-white rounded shadow-md p-5 text-center max-w-md w-full">
+            <form className="bg-white rounded shadow-md p-5 text-center max-w-md w-full" onSubmit={handleSubmit}>
                 <h1 className="text-lg font-medium mb-3 text-gray-800">Registro Abarrotería SGI</h1>
                 <div className="mb-4">
                     <label className="sr-only">Nombre</label>
@@ -66,9 +70,11 @@ const Registrarse = () => {
                     <label className="sr-only">Confirmar contraseña</label>
                     <input type="password" id="inputRePassword" className="block w-full border border-gray-300 rounded py-2 px-3 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent rounded-b" ref={rePassword} required={true} placeholder="Confirmar contraseña" />
                 </div>
-                <button className="bg-purple-500 hover:bg-purple-600 text-white font-medium rounded py-2 px-4 w-full" type="submit">Registrarse</button>
+                <button className="bg-gray-800 hover:bg-gray-600 text-white font-medium rounded py-2 px-4 w-full" type="submit">Registrarse</button>
             </form>
         </div>
+        <Footer/>
+        </>
     );
 }
 

@@ -1,6 +1,8 @@
 import Cookies from "universal-cookie";
 import { useEffect, useRef } from 'react'
 import { useRouter } from 'next/router'
+import Footer from '@/components/Footer'
+import NavbarInicio from "@/components/NavbarInicio";
 
 const Home = () => {
 
@@ -42,7 +44,9 @@ const Home = () => {
   }, []);
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
+    <>
+    <NavbarInicio/>
+    <div className="flex flex-col items-center justify-center h-screen">
       <form className="w-full max-w-sm bg-white rounded-lg shadow-md p-6 text-center" onSubmit={handleSubmit}>
         <h1 className="text-lg font-medium mb-3 text-gray-700">Iniciar Sesión SGI Abarrotería</h1>
         <div className="mb-4">
@@ -69,12 +73,14 @@ const Home = () => {
             name="password"
           />
         </div>
-        <button className="bg-indigo-500 hover:bg-indigo-600 text-white rounded-lg py-2 px-4 w-full mb-4" type="submit">Ingresar</button>
+        <button className="bg-gray-800 hover:bg-gray-600 text-white rounded-lg py-2 px-4 w-full mb-4" type="submit">Ingresar</button>
         <div className="text-gray-700 text-sm">
           <a href="registro" className="underline">¿No tienes una cuenta? Regístrate aquí</a>
         </div>
       </form>
     </div>
+    <Footer/>
+    </>
   )
 }
 
