@@ -9,7 +9,7 @@ const Navbar = () => {
         <nav className="bg-gray-800">
             <div className="mx-auto px-4 py-2">
                 <div className="flex items-center justify-between">
-                    <Link href="/" className="text-xl text-white font-bold">
+                    <Link href="principal" className="text-xl text-white font-bold">
                         SGI-Abarroteria
                     </Link>
 
@@ -52,12 +52,6 @@ const Navbar = () => {
                         >
                         Productos
                         </Link>
-                        <Link
-                        href="notas"
-                        className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
-                        >
-                        Notas
-                        </Link>
                     </div>
                 </div>
             </div>
@@ -76,12 +70,6 @@ const Navbar = () => {
                         className="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
                         >
                         Productos
-                        </Link>
-                        <Link
-                        href="notas"
-                        className="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
-                        >
-                        Notas
                         </Link>
                     </div>
                 </div>

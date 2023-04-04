@@ -10,26 +10,41 @@ const Productos = () => {
     const router = useRouter();
     const [productos, setProductos] = useState([]);
     const id = useRef(null);
-    const producto = useRef(null);
-    const cantidad = useRef(null);
+    const nombre = useRef(null);
+    const descripcion = useRef(null);
+    const codigoBarras = useRef(null);
+    const sku = useRef(null);
+    const precio = useRef(null);
+    const cantidadStock = useRef(null);
+    const categoria = useRef(null);
     const proveedor = useRef(null);
-    const costoUnitario = useRef(null);
+    const fechaEntrada = useRef(null);
     const option = useRef(null);
 
     const fetchData = async () => {
-        const data = await fetch("http://localhost/APISGI/api/productos.php");
-        const notas = await data.json();
-        setProductos(notas);
+        try{
+            const data = await fetch("http://localhost/APISGI/api/productos.php");
+            const productos = await data.json();
+            setProductos(productos);
+        }catch(error){
+            alert("Error al cargar los productos");
+            console.log(error);
+        }
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         const productoEnviar = {
-            producto: producto.current.value,
-            cantidad: parseInt(cantidad.current.value),
+            nombre: nombre.current.value,
+            descripcion: descripcion.current.value,
+            codigo_barras: codigoBarras.current.value,
+            sku : sku.current.value,
+            precio: parseFloat(precio.current.value),
+            cantidad_stock: parseInt(cantidadStock.current.value),
+            categoria: categoria.current.value,
             proveedor: parseInt(proveedor.current.value),
-            costo_unitario: parseInt(costoUnitario.current.value)
+            fecha_entrada: fechaEntrada.current.value
         }
 
         try{
@@ -56,6 +71,8 @@ const Productos = () => {
                     break;
             }
         }catch(ex){
+            alert("Error al guardar el producto");
+            console.log(ex);
         }
         fetchData();
         handleEmptyData();
@@ -63,18 +80,26 @@ const Productos = () => {
     
     const handleEmptyData = () => {
         id.current.value = "";
-        producto.current.value = "";
-        cantidad.current.value = "";
-        proveedor.current.value = "";
-        costoUnitario.current.value = "";
+        nombre.current.value = "";
+        descripcion.current.value = "";
+        codigoBarras.current.value = "";
+        sku.current.value = "";
+        precio.current.value = "";
+        cantidadStock.current.value = "";
+        categoria.current.value = "";
+        fechaEntrada.current.value = "";
     }
 
     const handleFillData = (item) => {
         id.current.value = item.id;
-        producto.current.value = item.producto;
-        cantidad.current.value = item.cantidad;
-        proveedor.current.value = item.proveedor;
-        costoUnitario.current.value = item.costo_unitario;
+        nombre.current.value = item.nombre;
+        descripcion.current.value = item.descripcion;
+        codigoBarras.current.value = item.codigo_barras;
+        sku.current.value = item.sku;
+        precio.current.value = item.precio;
+        cantidadStock.current.value = item.cantidad_stock;
+        categoria.current.value = item.categoria;
+        fechaEntrada.current.value = item.fecha_entrada;
     }
 
     const verifyCookie = () => {
@@ -101,16 +126,31 @@ const Productos = () => {
                                 <input type="text" className="appearance-none border border-gray-400 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="ID" disabled ref={id}></input>
                             </div>
                             <div className="mb-4">
-                                <input type="text" className="appearance-none border border-gray-400 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Producto" required={true} ref={producto}/>
+                                <input type="text" className="appearance-none border border-gray-400 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Nombre" required={true} ref={nombre}/>
                             </div>
                             <div className="mb-4">
-                                <input type="number" className="appearance-none border border-gray-400 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Cantidad" required={true} ref={cantidad}/>
+                                <input type="text" className="appearance-none border border-gray-400 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Descripcion" required={true} ref={descripcion}/>
                             </div>
                             <div className="mb-4">
-                                <input type="number" className="appearance-none border border-gray-400 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Proveedor" required={true} ref={proveedor}/>
+                                <input type="text" className="appearance-none border border-gray-400 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Codigo de barras" required={true} ref={codigoBarras}/>
                             </div>
                             <div className="mb-4">
-                                <input type="number" className="appearance-none border border-gray-400 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Costo unitario" required={true} ref={costoUnitario}/>
+                                <input type="text" className="appearance-none border border-gray-400 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Sku" required={true} ref={sku}/>
+                            </div>
+                            <div className="mb-4">
+                                <input type="number" className="appearance-none border border-gray-400 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Precio" required={true} ref={precio}/>
+                            </div>
+                            <div className="mb-4">
+                                <input type="number" className="appearance-none border border-gray-400 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Cantidad en stock" required={true} ref={cantidadStock}/>
+                            </div>
+                            <div className="mb-4">
+                                <input type="text" className="appearance-none border border-gray-400 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Categoria" required={true} ref={categoria}/>
+                            </div>
+                            <div className="mb-4">
+                                <input type="text" className="appearance-none border border-gray-400 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Proveedor" required={true} ref={proveedor}/>
+                            </div>
+                            <div className="mb-4">
+                                <input type="date" className="appearance-none border border-gray-400 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required={true} ref={fechaEntrada}/>
                             </div>
                             <div className="mb-4">
                                 <select name="option" className="appearance-none border border-gray-400 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" ref={option}>
@@ -130,10 +170,15 @@ const Productos = () => {
                         <thead>
                                 <tr>
                                 <th className="px-4 py-2">ID</th>
-                                <th className="px-4 py-2">Producto</th>
-                                <th className="px-4 py-2">Cantidad</th>
+                                <th className="px-4 py-2">Nombre</th>
+                                <th className="px-4 py-2">Descripcion</th>
+                                <th className="px-4 py-2">Codigo de barras</th>
+                                <th className="px-4 py-2">Sku</th>
+                                <th className="px-4 py-2">Precio</th>
+                                <th className="px-4 py-2">Cantidad en stock</th>
+                                <th className="px-4 py-2">Categoria</th>
                                 <th className="px-4 py-2">Proveedor</th>
-                                <th className="px-4 py-2">Costo unitario</th>
+                                <th className="px-4 py-2">Fecha de entrada</th>
                                 <th className="px-4 py-2">
                                     <button className="bg-gray-800 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" onClick={() => handleEmptyData()}>Deseleccionar</button>
                                 </th>
@@ -145,10 +190,15 @@ const Productos = () => {
                             return(
                             <tr key={producto.id}>
                                 <td className="border px-4 py-2">{producto.id}</td>
-                                <td className="border px-4 py-2">{producto.producto}</td>
-                                <td className="border px-4 py-2">{producto.cantidad}</td>
-                                <td className="border px-4 py-2">{producto.proveedor}</td>
-                                <td className="border px-4 py-2">{producto.costo_unitario}</td>
+                                <td className="border px-4 py-2">{producto.nombre}</td>
+                                <td className="border px-4 py-2">{producto.descripcion}</td>
+                                <td className="border px-4 py-2">{producto.codigo_barras}</td>
+                                <td className="border px-4 py-2">{producto.sku}</td>
+                                <td className="border px-4 py-2">{producto.precio}</td>
+                                <td className="border px-4 py-2">{producto.cantidad_stock}</td>
+                                <td className="border px-4 py-2">{producto.categoria}</td>
+                                <td className="border px-4 py-2">{producto.proveedor_nombre}</td>
+                                <td className="border px-4 py-2">{producto.fecha_entrada}</td>
                                 <td className="border px-4 py-2">
                                     <button className="bg-gray-800 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" onClick={() => handleFillData(producto)}>Seleccionar</button>
                                 </td>

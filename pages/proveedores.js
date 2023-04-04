@@ -9,31 +9,33 @@ const Proveedores = () => {
     const cookie = new Cookies();
     const router = useRouter();
     const [proveedores, setProveedores] = useState([]);
-    const proveedor = useRef(null);
     const nombre = useRef(null);
-    const producto = useRef(null);
-    const precioUnitario = useRef(null);
-    const costoUnitario = useRef(null);
-    const numeroTelefonico = useRef(null);
+    const direccion = useRef(null);
+    const correoElectronico = useRef(null);
+    const nombrePersonaContacto = useRef(null);
+    const cuentaBancaria = useRef(null);
     const id = useRef(null);
     const option = useRef(null);
 
     const fetchData = async () => {
-        const data = await fetch("http://localhost/APISGI/api/proveedores.php");
-        const notas = await data.json();
-        setProveedores(notas);
+        try{
+            const data = await fetch("http://localhost/APISGI/api/proveedores.php");
+            const notas = await data.json();
+            setProveedores(notas);
+        }catch(error){
+            alert("Error al cargar los proveedores")
+        }
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         
         const proveedorEnviar = {
-            proveedor: proveedor.current.value,
             nombre: nombre.current.value,
-            producto: producto.current.value,
-            precio_unitario: parseInt(precioUnitario.current.value),
-            costo_unitario: parseInt(costoUnitario.current.value),
-            numero_telefonico: numeroTelefonico.current.value
+            direccion: direccion.current.value,
+            correo_electronico: correoElectronico.current.value,
+            nombre_persona_contacto: nombrePersonaContacto.current.value,
+            cuenta_bancaria: cuentaBancaria.current.value
         };
 
         try{
@@ -51,6 +53,7 @@ const Proveedores = () => {
                     body: JSON.stringify(proveedorEnviar),
                     });
                     alert("Proveedor actualizado");
+                    break;
                 case "delete":
                     await fetch(`http://localhost/APISGI/api/proveedores.php?idDelete=${id.current.value}`, {
                     method: "POST",
@@ -59,6 +62,8 @@ const Proveedores = () => {
                     break;
             }
         }catch(ex){
+            alert("Error al guardar el proveedor");
+            console.log(ex);
         }
         fetchData();
         handleEmptyData();
@@ -67,21 +72,19 @@ const Proveedores = () => {
     const handleEmptyData = async () => {
         id.current.value = "";
         nombre.current.value = "";
-        proveedor.current.value = "";
-        producto.current.value = "";
-        precioUnitario.current.value = "";
-        costoUnitario.current.value = "";
-        numeroTelefonico.current.value = "";
+        direccion.current.value = "";
+        correoElectronico.current.value = "";
+        nombrePersonaContacto.current.value = "";
+        cuentaBancaria.current.value = "";
     }
 
     const handleFillData = async (aux) => {
         id.current.value = aux.id;
         nombre.current.value = aux.nombre;
-        proveedor.current.value = aux.proveedor;
-        producto.current.value = aux.producto;
-        precioUnitario.current.value = aux.precio_unitario;
-        costoUnitario.current.value = aux.costo_unitario;
-        numeroTelefonico.current.value = aux.numero_telefonico;
+        direccion.current.value = aux.direccion;
+        correoElectronico.current.value = aux.correo_electronico;
+        nombrePersonaContacto.current.value = aux.nombre_persona_contacto;
+        cuentaBancaria.current.value = aux.cuenta_bancaria;
     }
 
     const verifyCookie = () => {
@@ -108,22 +111,19 @@ const Proveedores = () => {
                             <input type="text" className="appearance-none border border-gray-400 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" disabled placeholder="ID" ref={id}></input>
                         </div>
                         <div className="mb-4">
-                            <input type="text" className="appearance-none border border-gray-400 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Proveedor" required={true} ref={proveedor} />
-                        </div>
-                        <div className="mb-4">
                             <input type="text" className="appearance-none border border-gray-400 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Nombre" required={true} ref={nombre} />
                         </div>
                         <div className="mb-4">
-                            <input type="text" className="appearance-none border border-gray-400 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Producto" required={true} ref={producto} />
+                            <input type="text" className="appearance-none border border-gray-400 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Direccion" required={true} ref={direccion} />
                         </div>
                         <div className="mb-4">
-                            <input type="number" className="appearance-none border border-gray-400 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Precio unitario" required={true} ref={precioUnitario} />
+                            <input type="text" className="appearance-none border border-gray-400 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Correo electronico" required={true} ref={correoElectronico} />
                         </div>
                         <div className="mb-4">
-                            <input type="number" className="appearance-none border border-gray-400 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Costo unitario" required={true} ref={costoUnitario} />
+                            <input type="text" className="appearance-none border border-gray-400 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Nombre de contacto" required={true} ref={nombrePersonaContacto} />
                         </div>
                         <div className="mb-4">
-                            <input type="number" className="appearance-none border border-gray-400 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Numero telefonico" required={true} ref={numeroTelefonico} />
+                            <input type="text" className="appearance-none border border-gray-400 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Numero de cuenta bancaria" required={true} ref={cuentaBancaria} />
                         </div>
                         <div className="mb-4">
                             <select name="option" className="appearance-none border border-gray-400 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" ref={option}>
@@ -141,12 +141,11 @@ const Proveedores = () => {
                     <thead>
                         <tr>
                             <th className="px-4 py-2">ID</th>
-                            <th className="px-4 py-2">Proveedor</th>
                             <th className="px-4 py-2">Nombre</th>
-                            <th className="px-4 py-2">Producto</th>
-                            <th className="px-4 py-2">Precio unitario</th>
-                            <th className="px-4 py-2">Costo unitario</th>
-                            <th className="px-4 py-2">Numero telefonico</th>
+                            <th className="px-4 py-2">Direccion</th>
+                            <th className="px-4 py-2">Correo electronico</th>
+                            <th className="px-4 py-2">Nombre de contacto</th>
+                            <th className="px-4 py-2">Numero de cuenta bancaria</th>
                             <th className="px-4 py-2">
                                 <button className="bg-gray-800 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" onClick={() => handleEmptyData()}>Deseleccionar</button>
                             </th>
@@ -157,12 +156,11 @@ const Proveedores = () => {
                         proveedores.map(proveedor => (
                             <tr key={proveedor.id}>
                                 <td className="border px-4 py-2">{proveedor.id}</td>
-                                <td className="border px-4 py-2">{proveedor.proveedor}</td>
                                 <td className="border px-4 py-2">{proveedor.nombre}</td>
-                                <td className="border px-4 py-2">{proveedor.producto}</td>
-                                <td className="border px-4 py-2">{proveedor.precio_unitario}</td>
-                                <td className="border px-4 py-2">{proveedor.costo_unitario}</td>
-                                <td className="border px-4 py-2">{proveedor.numero_telefonico}</td>
+                                <td className="border px-4 py-2">{proveedor.direccion}</td>
+                                <td className="border px-4 py-2">{proveedor.correo_electronico}</td>
+                                <td className="border px-4 py-2">{proveedor.nombre_persona_contacto}</td>
+                                <td className="border px-4 py-2">{proveedor.cuenta_bancaria}</td>
                                 <td className="border px-4 py-2"> 
                                     <button className="bg-gray-800 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" onClick={() => handleFillData(proveedor)}>Seleccionar</button>
                                 </td>

@@ -13,9 +13,15 @@ const Home = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    const response = await fetch(`http://localhost/APISGI/api/usuarios.php?correo=${email.current.value}`);
-    const usuario = await response.json();
+    let response;
+    let usuario;
+    try{
+      response = await fetch(`http://localhost/APISGI/api/usuarios.php?correo=${email.current.value}`);
+      usuario = await response.json();
+    }catch(error){
+      alert("Error al iniciar sesión");
+      return;
+    }
 
     if(email.current.value !== usuario.correo){
       alert("El correo es incorrecto");
@@ -29,12 +35,12 @@ const Home = () => {
 
     cookie.set("email", usuario.correo);
 
-    router.push("proveedores");
+    router.push("principal");
   };
   
   const verifyCookie = () => {
     if(cookie.get("email")) 
-      router.push("proveedores");
+      router.push("principal");
   };
 
   useEffect(() => {
